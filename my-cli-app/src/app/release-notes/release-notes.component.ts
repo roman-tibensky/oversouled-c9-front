@@ -8,11 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'release-notes',
-    template: `<h2>Release notes</h2>
+    template: `<h2 align="center"><i>What... happened...?</i></h2>
     <div *ngFor="let oneMessage of webSer.messages | async">
-        <md-card class="card">
-            <md-card-title [routerLink]="['/release',oneMessage.updateBy]" style="cursor: pointer">{{oneMessage.updateBy}}</md-card-title>
-            <md-card-content>{{oneMessage.text}}</md-card-content>
+        <md-card class="oneStory">
+          <md-card-title [routerLink]="['/release',oneMessage.updateBy]"  align="center" style="cursor: pointer"><i>{{oneMessage.updateBy}}</i></md-card-title>
+          <md-card-content align="center"><i>{{oneMessage.text}}</i></md-card-content>
         </md-card>
     </div>
 

@@ -9,8 +9,9 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'home',
     template: `
-        <new-update></new-update>
-        <release-notes></release-notes>
+        <!---<new-update></new-update>
+        <release-notes></release-notes> -->
+      <journey-view></journey-view>
     `,
 })
 export class HomeComponent  {
