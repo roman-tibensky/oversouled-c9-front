@@ -1,0 +1,20 @@
+<md-card style="width:400px">
+    <form [formGroup] = "form" (ngSubmit)="onSubmit()">
+        <md-input-container>
+            <input mdInput placeholder="Username" [ngClass]="{'error': isValid('user')}" style="width:350px" formControlName="user">
+        </md-input-container>
+        <md-input-container>
+            <input mdInput placeholder="E-mail" [ngClass]="{'error': isValid('email')}" type="email" style="width:350px" formControlName="email">
+        </md-input-container>
+        <md-input-container>
+            <input mdInput placeholder="Password" [ngClass]="{'error': isValid('pass')}" type="password" style="width:350px" formControlName="pass">
+        </md-input-container>
+        <md-input-container>
+            <input mdInput placeholder="Confirm Password" [ngClass]="{'error': isValid('rePass')}" type="password" style="width:350px" formControlName="rePass">
+        </md-input-container>
+        <br>
+        <span *ngIf="form.errors?.isNotMatching">Passwords dun match, brah</span>
+        <br>
+        <button md-raised-button color="primary">Submit</button>
+    </form>
+</md-card>
