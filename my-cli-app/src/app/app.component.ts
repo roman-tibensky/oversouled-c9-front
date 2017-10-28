@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+ import { Component } from '@angular/core';
+// import { ReleaseNotesComponent } from './release-notes/release-notes.component';
+
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'my-app',
+  template: `
+      <navi-ish-thing></navi-ish-thing>
+      <router-outlet></router-outlet>
+  `,
 })
-export class AppComponent {
-  title = 'app';
+export class AppComponent  {
+    name = 'stuff';
+
 }
