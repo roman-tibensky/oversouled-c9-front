@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
-    BASE_URL = 'http://localhost:8888/';
+    BASE_URL = 'https://oversouled-back-dev-romantibensky.c9users.io/';
 
     constructor(
         private http: Http,
