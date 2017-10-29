@@ -38,6 +38,7 @@ export class LevelViewComponent implements OnInit  {
       this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
       console.log(this.tiles);
       this.isLoading = false;
+
     });
 
   }
