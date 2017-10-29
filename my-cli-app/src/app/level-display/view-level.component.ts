@@ -14,7 +14,8 @@ import {WebService} from '../services/web.service';
 })
 export class LevelViewComponent implements OnInit  {
 
-  map;
+  mapBase;
+  mapLive;
   player;
   tiles;
   tilesIndex;
@@ -31,12 +32,24 @@ export class LevelViewComponent implements OnInit  {
 
   ngOnInit() {
     this.webSer.loadFirstLevel().subscribe(result => {
-      this.map = result.mapData.tiles;
+      this.mapBase = result.mapData.tiles;
+      this.mapLive = JSON.parse(JSON.stringify(this.mapBase));
       this.tiles = result.tileData.rows;
       this.player = result.playerData;
 
+      this.player.y = 7;
+      this.player.x = 7;
+      this.player.doc = {};
+      this.player.doc.color = '#1f00ff';
+      this.player.doc.displayAs = '@';
+
+      this.mapLive[this.player.y][this.player.x] = this.player._id;
+
       this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
+      this.tiles.push(this.player);
+      this.tilesIndex.push(this.player._id);
       console.log(this.tiles);
+      console.log(this.tilesIndex);
       this.isLoading = false;
 
     });

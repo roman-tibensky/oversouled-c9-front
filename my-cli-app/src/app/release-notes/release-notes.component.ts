@@ -5,6 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebService } from '../services/web.service';
 import { ActivatedRoute } from '@angular/router';
+import { NgStyle } from '@angular/common';
 
 @Component({
     selector: 'release-notes',
@@ -27,6 +28,5 @@ export class ReleaseNotesComponent implements OnInit {
         //     this.messages = messages;
         // });
     }
-
 
 }

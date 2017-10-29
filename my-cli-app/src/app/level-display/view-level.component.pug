@@ -6,5 +6,7 @@ p(*ngIf="isLoading") I can has loading
 
 md-card(*ngIf="!isLoading" class='oneStory')
   p {{player._id}}
-  pre(align="center", *ngFor="let oneRow of map")
-    b(*ngFor="let oneTile of oneRow" class="levelTable") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
+  pre(align="center", *ngFor="let oneRow of mapLive")
+    span(*ngFor="let oneTile of oneRow" class="levelTable")
+      b(*ngIf="tiles[tilesIndex.indexOf(oneTile)].doc.color",[style.color]="tiles[tilesIndex.indexOf(oneTile)].doc.color") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
+      b(*ngIf="!tiles[tilesIndex.indexOf(oneTile)].doc.color") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
