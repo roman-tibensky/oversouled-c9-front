@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { RegUserComponent } from './account-management/reg-user.component';
 import { LoginComponent } from './account-management/login.component';
 import { EditUserComponent } from './account-management/edit-user.component';
+import { LevelViewComponent } from './level-display/view-level.component'
 
 import { WebService } from './services/web.service';
 import { AuthService } from './services/authentication.service';
@@ -45,6 +46,10 @@ let routes = [{
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+      path: 'new-game',
+      component: LevelViewComponent
     }
 ];
 
@@ -71,7 +76,8 @@ let routes = [{
         NavbarComponent,
         RegUserComponent,
         LoginComponent,
-        EditUserComponent
+        EditUserComponent,
+        LevelViewComponent
     ],
     bootstrap: [
         AppComponent

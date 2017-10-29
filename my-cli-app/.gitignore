@@ -41,3 +41,8 @@ package-lock.json
 # System Files
 .DS_Store
 Thumbs.db
+
+
+# pug ovverride
+/src/*.html
+!/src/index.html

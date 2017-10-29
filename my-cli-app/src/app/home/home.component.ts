@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
     template: `
         <!---<new-update></new-update>
         <release-notes></release-notes> -->
-      <journey-view></journey-view>
+      <view-level></view-level>
     `,
 })
 export class HomeComponent  {

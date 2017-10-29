@@ -1,0 +1,9 @@
+//
+   Created by aRTie on 29/10/2017.
+
+p(*ngIf="isLoading") I can has loading
+
+
+md-card(*ngIf="!isLoading" class='oneStory')
+  pre(align="center", *ngFor="let oneRow of map")
+    b(*ngFor="let oneTile of oneRow") {{tiles[tilesIndex.indexOf(oneTile)].displayAs}}

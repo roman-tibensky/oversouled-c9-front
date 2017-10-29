@@ -30,7 +30,7 @@ export class WebService {
     getMessages(filter) {
         filter = (filter) ? '/' + filter : '';
         this.http.get(this.BASE_URL + 'api/release' + filter).subscribe(res => {
-            this.privateRelease = res.json();
+            this.privateRelease = res.json().rows;
             this.releaseSubject.next(this.privateRelease);
         }, err => {
             this.popupInfo.open('oh noes: ' + err, 'X', {duration: 3000});
@@ -57,5 +57,12 @@ export class WebService {
         return this.http.post(this.BASE_URL + 'api/current-user', userData, this.auth.tokenHeader).map(
           res => res.json()
         );
+    }
+
+
+    loadFirstLevel() {
+      return this.http.get(this.BASE_URL + 'api/new-game', this.auth.tokenHeader).map(
+        res => res.json()
+      );
     }
 }
