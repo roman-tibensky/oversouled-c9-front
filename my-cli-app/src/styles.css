@@ -22,7 +22,7 @@ body {
 }
 
 .topbar {
-  background: #880000;;
+  background: #880000;
   color: #000000;
 }
 
@@ -72,4 +72,20 @@ p {
   color: #9e9905 !important;
   border-radius: 10px 0 0 10px;
   min-width: 1% !important;
+}
+
+
+.redButton {
+  padding: 0 2px 0 2px !important;
+  margin: 2px 2px 2px 2px !important;
+  background: #880000;
+  color: #9e9905 !important;
+  border-radius: 10px 0 0 10px;
+
+}
+
+
+.mat-dialog-container {
+  background: #111111 !important;
+  color: #bfbb05 !important;
 }

@@ -4,7 +4,9 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import {WebService} from '../services/web.service';
+import { WebService } from '../services/web.service';
+import { MdDialog } from '@angular/material';
+import { GameOverDialogComponent } from '../dialogs/game-over.component';
 import * as _ from 'lodash';
 // import { ReleaseNotesComponent } from './release-notes/release-notes.component';
 
@@ -24,6 +26,7 @@ export class LevelViewComponent implements OnInit  {
 
   constructor(
     private webSer: WebService,
+    private dialog: MdDialog,
   ) {
     this.isLoading = true;
     this.tilesIndex = [];
@@ -38,15 +41,8 @@ export class LevelViewComponent implements OnInit  {
       this.tiles = result.tileData.rows;
       this.player = result.playerData;
 
-      this.player.y = 1;
-      this.player.x = 1;
-      this.player.doc = {};
-      this.player.doc.color = '#1f00ff';
-      this.player.doc.displayAs = '@';
-
-      this.mapLive = _.cloneDeep(this.mapBase);
-      this.mapLive[this.player.y][this.player.x] = this.player._id;
-
+      this.resetPlayer();
+      this.updateMap();
 
       this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
       this.tiles.push(this.player);
@@ -72,9 +68,11 @@ export class LevelViewComponent implements OnInit  {
     if (this.tiles[this.tilesIndex.indexOf(this.mapBase[this.player.y + yChange][this.player.x + xChange])].doc.canEnter){
       this.player.y += yChange;
       this.player.x += xChange;
-      this.player.hp += this.player.hpAdjust;
+
+      this.player.curHp += this.player.hpAdjust;
       this.movePlayer();
-      if (this.player.hp <= 0) {
+      if (this.player.curHp <= 0) {
+        this.gameOverDialog();
 
       }
     }
@@ -85,5 +83,33 @@ export class LevelViewComponent implements OnInit  {
     this.mapLive[this.player.y][this.player.x] = this.player._id;
   }
 
+  gameOverDialog() {
+    const dialogRef = this.dialog.open(GameOverDialogComponent, {
+      width: '300px',
+
+    });
+
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog closed: ${result}`);
+      this.resetPlayer();
+      this.updateMap();
+    });
+  }
+
+  resetPlayer() {
+    this.player.y = 7;
+    this.player.x = 7;
+    this.player.doc = {};
+    this.player.doc.color = '#1f00ff';
+    this.player.doc.displayAs = '@';
+    this.player.curHp = _.cloneDeep(this.player.hp);
+  }
+
+  updateMap() {
+    this.mapLive = _.cloneDeep(this.mapBase);
+    this.mapLive[this.player.y][this.player.x] = this.player._id;
+  }
 
 }

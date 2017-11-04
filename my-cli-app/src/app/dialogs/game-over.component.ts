@@ -3,17 +3,21 @@
  */
 
 
-import { Component, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, EventEmitter, Inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { MD_DIALOG_DATA } from '@angular/material';
+import { MdDialogRef } from '@angular/material';
 
 @Component({
-  selector: 'app-dialog',
+  selector: 'game-over',
   template: `
     <div align="center">
-      <b>You were scattered to the winds</b>
+      <b><i>You were scattered to the winds</i></b>
       <br>
-      <b>Like the song that never was</b>
-      <button md-button md-raised-button class="moveButton",(click)="close()">I will never stop</button>
+      <b><i>Like a scream that never was</i></b>
+      <br>
+      <br>
+      <button md-button md-raised-button class="redButton" (click)="close()"><b><i>I will never stop</i></b></button>
     </div>
   `,
   animations: [
@@ -28,17 +32,17 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     ])
   ]
 })
-export class GameOverDialog implements OnInit {
+export class GameOverDialogComponent implements OnInit {
   @Input() closable = true;
   @Input() visible: boolean;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(public thisDialogRef: MdDialogRef<GameOverDialogComponent>, @Inject(MD_DIALOG_DATA) public data: string) { }
+
 
   ngOnInit() { }
 
   close() {
-    this.visible = false;
-    this.visibleChange.emit(this.visible);
+    this.thisDialogRef.close('Confirm');
   }
 }

@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { MdToolbarModule } from '@angular/material';
 import { MdButtonModule } from '@angular/material';
 import { MdSnackBarModule } from '@angular/material';
+import { MdDialogModule } from '@angular/material';
 
 import { ReleaseNotesComponent } from './release-notes/release-notes.component';
 import { NewReleaseNotesComponent } from './new-release-note/new-release-note.component';
@@ -16,7 +17,10 @@ import { HomeComponent } from './home/home.component';
 import { RegUserComponent } from './account-management/reg-user.component';
 import { LoginComponent } from './account-management/login.component';
 import { EditUserComponent } from './account-management/edit-user.component';
-import { LevelViewComponent } from './level-display/view-level.component'
+import { LevelViewComponent } from './level-display/view-level.component';
+
+
+import { GameOverDialogComponent } from './dialogs/game-over.component';
 
 import { WebService } from './services/web.service';
 import { AuthService } from './services/authentication.service';
@@ -66,6 +70,7 @@ let routes = [{
         FormsModule,
         ReactiveFormsModule,
         MdToolbarModule,
+        MdDialogModule,
         RouterModule.forRoot(routes)
     ],
     declarations: [
@@ -77,8 +82,12 @@ let routes = [{
         RegUserComponent,
         LoginComponent,
         EditUserComponent,
-        LevelViewComponent
+        LevelViewComponent,
+        GameOverDialogComponent,
     ],
+  entryComponents: [
+    GameOverDialogComponent,
+  ],
     bootstrap: [
         AppComponent
     ],
