@@ -47,3 +47,29 @@ p {
 .levelTable {
   padding: 0 6px 0 6px !important;
 }
+
+
+.rotate-45-left {
+  display: inline-block;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.rotate-45-right {
+  display: inline-block;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.moveButton {
+  padding: 0 2px 0 2px !important;
+  margin: 2px 2px 2px 2px !important;
+  background: #111111;
+  color: #9e9905 !important;
+  border-radius: 10px 0 0 10px;
+  min-width: 1% !important;
+}
