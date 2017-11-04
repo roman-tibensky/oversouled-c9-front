@@ -86,6 +86,7 @@ export class LevelViewComponent implements OnInit  {
   gameOverDialog() {
     const dialogRef = this.dialog.open(GameOverDialogComponent, {
       width: '300px',
+      disableClose: true
 
     });
 
