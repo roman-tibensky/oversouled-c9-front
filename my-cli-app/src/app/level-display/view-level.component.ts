@@ -5,112 +5,120 @@
 
 import { Component, OnInit } from '@angular/core';
 import { WebService } from '../services/web.service';
+import { MoveResolutionService } from '../services/move-resolution.service';
 import { MdDialog } from '@angular/material';
 import { GameOverDialogComponent } from '../dialogs/game-over.component';
 import * as _ from 'lodash';
 // import { ReleaseNotesComponent } from './release-notes/release-notes.component';
 
 @Component({
-  selector: 'view-level',
-  templateUrl: `./view-level.component.html`,
-
+	selector: 'view-level',
+	templateUrl: `./view-level.component.html`,
 })
+
 export class LevelViewComponent implements OnInit  {
 
-  mapBase;
-  mapLive;
-  player;
-  tiles;
-  tilesIndex;
-  isLoading;
+	mapBase;
+	mapLive;
+	player;
+	tiles;
+	tilesIndex;
+	isLoading;
+	npcs;
 
-  constructor(
-    private webSer: WebService,
-    private dialog: MdDialog,
-  ) {
-    this.isLoading = true;
-    this.tilesIndex = [];
-  }
-
-
-
-  ngOnInit() {
-    this.webSer.loadFirstLevel().subscribe(result => {
-      this.mapBase = result.mapData.tiles;
-
-      this.tiles = result.tileData.rows;
-      this.player = result.playerData;
-
-      this.resetPlayer();
-      this.updateMap();
-
-      this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
-      this.tiles.push(this.player);
-      this.tilesIndex.push(this.player._id);
-      console.log(this.tiles);
-      console.log(this.tilesIndex);
-      this.isLoading = false;
-
-    });
+	constructor(
+		private webSer: WebService,
+		private dialog: MdDialog,
+		private moveSer: MoveResolutionService,
+	) {
+		this.isLoading = true;
+		this.tilesIndex = [];
+	}
 
 
 
-  }
+	ngOnInit() {
+		this.webSer.loadFirstLevel().subscribe(result => {
+			this.mapBase = result.mapData.tiles;
 
-  printPosition(y, x) {
-    console.log(y + '.' + x);
-  }
+			this.tiles = result.tileData.rows;
+			this.player = result.playerData;
+			this.npcs = result.npcData;
 
+			this.resetPlayer();
 
-  initMove(yChange, xChange) {
+			this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
+			this.tiles.push(this.player);
+			this.tilesIndex.push(this.player._id);
 
+			for (const oneNpc in this.npcs) {
+				this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].hp);
+				this.npcs[oneNpc].origX = _.cloneDeep(this.npcs[oneNpc].x);
+				this.npcs[oneNpc].origY = _.cloneDeep(this.npcs[oneNpc].y);
+				this.npcs[oneNpc].curMove = 0;
+				this.tiles.push(this.npcs[oneNpc]);
+				this.tilesIndex.push(this.npcs[oneNpc]._id);
+			}
 
-    if (this.tiles[this.tilesIndex.indexOf(this.mapBase[this.player.y + yChange][this.player.x + xChange])].doc.canEnter){
-      this.player.y += yChange;
-      this.player.x += xChange;
+			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
 
-      this.player.curHp += this.player.hpAdjust;
-      this.movePlayer();
-      if (this.player.curHp <= 0) {
-        this.gameOverDialog();
+			this.isLoading = false;
 
-      }
-    }
-  }
-
-  movePlayer() {
-    this.mapLive = _.cloneDeep(this.mapBase);
-    this.mapLive[this.player.y][this.player.x] = this.player._id;
-  }
-
-  gameOverDialog() {
-    const dialogRef = this.dialog.open(GameOverDialogComponent, {
-      width: '300px',
-      disableClose: true
-
-    });
+		});
 
 
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog closed: ${result}`);
-      this.resetPlayer();
-      this.updateMap();
-    });
-  }
+	}
 
-  resetPlayer() {
-    this.player.y = 7;
-    this.player.x = 7;
-    this.player.doc = {};
-    this.player.doc.color = '#1f00ff';
-    this.player.doc.displayAs = '@';
-    this.player.curHp = _.cloneDeep(this.player.hp);
-  }
+	printPosition (y, x) {
+		console.log(y + '.' + x);
+	}
 
-  updateMap() {
-    this.mapLive = _.cloneDeep(this.mapBase);
-    this.mapLive[this.player.y][this.player.x] = this.player._id;
-  }
+
+	initMove (yChange, xChange) {
+		this.player = this.moveSer.initMove(this.tiles, this.tilesIndex, this.mapBase, this.player, yChange, xChange,'canEnter');
+
+		if (this.player.curHp <= 0) {
+			this.gameOverDialog();
+		}
+
+		if (this.player.moved) {
+			this.moveSer.moveObjects(this.tiles, this.tilesIndex, this.mapBase, this.player, this.npcs);
+			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
+		}
+
+	}
+
+
+	gameOverDialog() {
+		const dialogRef = this.dialog.open(GameOverDialogComponent, {
+			width: '300px',
+			disableClose: true
+		});
+
+
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log(`Dialog closed: ${result}`);
+			this.resetPlayer();
+			this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
+		});
+	}
+
+	resetPlayer() {
+		this.player.y = 7;
+		this.player.x = 7;
+		this.player.doc = {};
+		this.player.doc.color = '#1f00ff';
+		this.player.doc.displayAs = '@';
+		this.player.curHp = _.cloneDeep(this.player.hp);
+		for (const oneNpc in this.npcs) {
+			this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].hp);
+			this.npcs[oneNpc].origX = _.cloneDeep(this.npcs[oneNpc].x);
+			this.npcs[oneNpc].origY = _.cloneDeep(this.npcs[oneNpc].y);
+		}
+	}
+
+
 
 }

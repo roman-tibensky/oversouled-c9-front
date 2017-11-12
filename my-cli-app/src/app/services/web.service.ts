@@ -61,7 +61,10 @@ export class WebService {
 
 
     loadFirstLevel() {
-      return this.http.get(this.BASE_URL + 'api/new-game', this.auth.tokenHeader).map(
+      const sendReq = {
+        lvl: 1
+      };
+      return this.http.post(this.BASE_URL + 'api/new-game', sendReq, this.auth.tokenHeader).map(
         res => res.json()
       );
     }

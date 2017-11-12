@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "pug-it && server",
+    "start": "npm run pug-it && npm run server",
     "server": "ng serve --host 0.0.0.0 --port 8080 --disableHostCheck",
     "build": "ng build",
     "test": "ng test",
