@@ -1,43 +1,43 @@
 //
-   Created by aRTie on 29/10/2017.
+	Created by aRTie on 29/10/2017.
 
 p(*ngIf="isLoading") I can has loading
 
 table(*ngIf="!isLoading" align="center")
-  tr
-      td(width)
-        b
-          i Consciousness
-        br
-        b
-          i {{player.curHp}} / {{player.hp}}
-        br
-        br
+	tr
+		td(width)
+			b
+				i Consciousness
+			br
+			b
+				i {{player.curHp}} / {{player.hp}}
+			br
+			br
 
-        pre
-          button(md-button md-raised-button class="moveButton",(click)="initMove(-1,-1)")
-            i(class="material-icons rotate-45-left") keyboard_arrow_up
-          button(md-button md-raised-button class="moveButton",(click)="initMove(-1,0)")
-            i(class="material-icons") keyboard_arrow_up
-          button(md-button md-raised-button class="moveButton",(click)="initMove(-1,1)")
-            i(class="material-icons rotate-45-right") keyboard_arrow_up
-          br
-          button(md-button md-raised-button class="moveButton",(click)="initMove(0,-1)")
-            i(class="material-icons") keyboard_arrow_left
-          button(md-button md-raised-button class="moveButton",(click)="initMove(0,0)")
-            i(class="material-icons hidden") keyboard_arrow_up
-          button(md-button md-raised-button class="moveButton",(click)="initMove(0,1)")
-            i(class="material-icons") keyboard_arrow_right
-          br
-          button(md-button md-raised-button class="moveButton",(click)="initMove(1,-1)")
-            i(class="material-icons rotate-45-right") keyboard_arrow_down
-          button(md-button md-raised-button class="moveButton",(click)="initMove(1,0)")
-            i(class="material-icons") keyboard_arrow_down
-          button(md-button md-raised-button class="moveButton",(click)="initMove(1,1)")
-            i(class="material-icons rotate-45-left") keyboard_arrow_down
-      td
-        md-card(class='oneStory')
-          pre(align="center", *ngFor="let oneRow of mapLive; let yAxis = index")
-            span(*ngFor="let oneTile of oneRow; let xAxis = index" class="levelTable")
-              b(*ngIf="tiles[tilesIndex.indexOf(oneTile)].doc.color",[style.color]="tiles[tilesIndex.indexOf(oneTile)].doc.color",(click)="printPosition(yAxis,xAxis)") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
-              b(*ngIf="!tiles[tilesIndex.indexOf(oneTile)].doc.color",(click)="printPosition(yAxis,xAxis)") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
+			pre
+				button(md-button md-raised-button class="moveButton",(click)="initMove(-1,-1)")
+					i(class="material-icons rotate-45-left") keyboard_arrow_up
+				button(md-button md-raised-button class="moveButton",(click)="initMove(-1,0)")
+					i(class="material-icons") keyboard_arrow_up
+				button(md-button md-raised-button class="moveButton",(click)="initMove(-1,1)")
+					i(class="material-icons rotate-45-right") keyboard_arrow_up
+				br
+				button(md-button md-raised-button class="moveButton",(click)="initMove(0,-1)")
+					i(class="material-icons") keyboard_arrow_left
+				button(md-button md-raised-button class="moveButton",(click)="initMove(0,0)")
+					i(class="material-icons hidden") keyboard_arrow_up
+				button(md-button md-raised-button class="moveButton",(click)="initMove(0,1)")
+					i(class="material-icons") keyboard_arrow_right
+				br
+				button(md-button md-raised-button class="moveButton",(click)="initMove(1,-1)")
+					i(class="material-icons rotate-45-right") keyboard_arrow_down
+				button(md-button md-raised-button class="moveButton",(click)="initMove(1,0)")
+					i(class="material-icons") keyboard_arrow_down
+				button(md-button md-raised-button class="moveButton",(click)="initMove(1,1)")
+					i(class="material-icons rotate-45-left") keyboard_arrow_down
+		td
+			md-card(class='oneStory')
+				pre(align="center", *ngFor="let oneRow of mapLive; let yAxis = index")
+					span(*ngFor="let oneTile of oneRow; let xAxis = index" class="levelTable")
+						b(*ngIf="tiles[tilesIndex.indexOf(oneTile)].doc.color",[style.color]="tiles[tilesIndex.indexOf(oneTile)].doc.color",(click)="printPosition(yAxis,xAxis)") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}
+						b(*ngIf="!tiles[tilesIndex.indexOf(oneTile)].doc.color",(click)="printPosition(yAxis,xAxis)") {{tiles[tilesIndex.indexOf(oneTile)].doc.displayAs}}

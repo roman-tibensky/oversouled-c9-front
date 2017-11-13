@@ -11,9 +11,14 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class MoveResolutionService {
-	initMove(tiles, tilesIndex, mapBase, movedObject, yChange, xChange, howToEnter) {
+	initMove(tiles, tilesIndex, mapBase, mapLive, movedObject, yChange, xChange, howToEnter) {
 
-		if (tiles[tilesIndex.indexOf(mapBase[movedObject.y + yChange][movedObject.x + xChange])].doc[howToEnter]) {
+		if (
+			tiles[tilesIndex.indexOf(mapBase[movedObject.y + yChange][movedObject.x + xChange])].doc[howToEnter]
+			&& (howToEnter !== 'canBodyEnter'
+				|| tiles[tilesIndex.indexOf(mapLive[movedObject.y + yChange][movedObject.x + xChange])].doc[howToEnter]
+			)
+		) {
 			movedObject.y += yChange;
 			movedObject.x += xChange;
 
@@ -37,7 +42,7 @@ export class MoveResolutionService {
 		return mapLive;
 	}
 
-	moveObjects(tiles, tilesIndex, mapBase, player, movedObjects){
+	moveObjects(tiles, tilesIndex, mapBase, mapLive, player, movedObjects){
 
 		for(const oneObj in movedObjects) {
 			const diff = Math.floor(movedObjects[oneObj].curMove + movedObjects[oneObj].doc.movement) - movedObjects[oneObj].curMove;
@@ -87,7 +92,7 @@ export class MoveResolutionService {
 				}
 
 				if (y !== 0 && x !== 0) {
-					movedObjects[oneObj] = this.initMove(tiles, tilesIndex, mapBase, movedObjects[oneObj], y, x, 'canBodyEnter');
+					movedObjects[oneObj] = this.initMove(tiles, tilesIndex, mapBase, mapLive, movedObjects[oneObj], y, x, 'canBodyEnter');
 				}
 			}
 			movedObjects[oneObj].curMove += movedObjects[oneObj].doc.movement;

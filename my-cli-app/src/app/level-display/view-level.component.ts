@@ -25,6 +25,10 @@ export class LevelViewComponent implements OnInit  {
 	tilesIndex;
 	isLoading;
 	npcs;
+	showCreature;
+	showPlayer;
+	showTile;
+	currShowing;
 
 	constructor(
 		private webSer: WebService,
@@ -33,6 +37,11 @@ export class LevelViewComponent implements OnInit  {
 	) {
 		this.isLoading = true;
 		this.tilesIndex = [];
+		this.showCreature = false;
+		this.showPlayer = false;
+		this.showTile = false;
+		this.currShowing = {};
+
 	}
 
 
@@ -45,7 +54,7 @@ export class LevelViewComponent implements OnInit  {
 			this.player = result.playerData;
 			this.npcs = result.npcData;
 
-			this.resetPlayer();
+
 
 			this.tilesIndex = this.tiles.map(oneTile => oneTile.id);
 			this.tiles.push(this.player);
@@ -60,6 +69,8 @@ export class LevelViewComponent implements OnInit  {
 				this.tilesIndex.push(this.npcs[oneNpc]._id);
 			}
 
+			this.resetPlayer();
+
 			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
 
 			this.isLoading = false;
@@ -70,20 +81,43 @@ export class LevelViewComponent implements OnInit  {
 
 	}
 
-	printPosition (y, x) {
+	checkAction (y, x) {
 		console.log(y + '.' + x);
+		this.currShowing = _.cloneDeep(this.tiles[this.tilesIndex.indexOf(this.mapLive[y][x])].doc.clickType);
+		switch (this.currShowing.doc.clickType) {
+			case 'creature':
+				this.showCreature = true;
+				this.showPlayer = false;
+				this.showTile = false;
+				break;
+			case 'player':
+				this.showCreature = false;
+				this.showPlayer = true;
+				this.showTile = false;
+				break;
+			case 'tile':
+				this.showCreature = false;
+				this.showPlayer = false;
+				this.showTile = true;
+				break;
+			default:
+				this.showCreature = false;
+				this.showPlayer = false;
+				this.showTile = false;
+				break;
+		}
 	}
 
 
 	initMove (yChange, xChange) {
-		this.player = this.moveSer.initMove(this.tiles, this.tilesIndex, this.mapBase, this.player, yChange, xChange,'canEnter');
+		this.player = this.moveSer.initMove(this.tiles, this.tilesIndex, this.mapBase, this.mapLive, this.player, yChange, xChange,'canEnter');
 
 		if (this.player.curHp <= 0) {
 			this.gameOverDialog();
 		}
 
 		if (this.player.moved) {
-			this.moveSer.moveObjects(this.tiles, this.tilesIndex, this.mapBase, this.player, this.npcs);
+			this.moveSer.moveObjects(this.tiles, this.tilesIndex, this.mapBase, this.mapLive, this.player, this.npcs);
 			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
 		}
 
@@ -101,7 +135,7 @@ export class LevelViewComponent implements OnInit  {
 		dialogRef.afterClosed().subscribe(result => {
 			console.log(`Dialog closed: ${result}`);
 			this.resetPlayer();
-			this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
+			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
 		});
 	}
 
@@ -114,8 +148,8 @@ export class LevelViewComponent implements OnInit  {
 		this.player.curHp = _.cloneDeep(this.player.hp);
 		for (const oneNpc in this.npcs) {
 			this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].hp);
-			this.npcs[oneNpc].origX = _.cloneDeep(this.npcs[oneNpc].x);
-			this.npcs[oneNpc].origY = _.cloneDeep(this.npcs[oneNpc].y);
+			this.npcs[oneNpc].x = _.cloneDeep(this.npcs[oneNpc].origX);
+			this.npcs[oneNpc].y = _.cloneDeep(this.npcs[oneNpc].origY);
 		}
 	}
 
