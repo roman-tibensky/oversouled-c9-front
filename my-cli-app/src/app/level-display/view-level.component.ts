@@ -61,7 +61,8 @@ export class LevelViewComponent implements OnInit  {
 			this.tilesIndex.push(this.player._id);
 
 			for (const oneNpc in this.npcs) {
-				this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].hp);
+				this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].doc.baseHp);
+				this.npcs[oneNpc].curLvl = _.cloneDeep(this.npcs[oneNpc].doc.baseLevel);
 				this.npcs[oneNpc].origX = _.cloneDeep(this.npcs[oneNpc].x);
 				this.npcs[oneNpc].origY = _.cloneDeep(this.npcs[oneNpc].y);
 				this.npcs[oneNpc].curMove = 0;
@@ -83,7 +84,7 @@ export class LevelViewComponent implements OnInit  {
 
 	checkAction (y, x) {
 		console.log(y + '.' + x);
-		this.currShowing = _.cloneDeep(this.tiles[this.tilesIndex.indexOf(this.mapLive[y][x])].doc.clickType);
+		this.currShowing = _.cloneDeep(this.tiles[this.tilesIndex.indexOf(this.mapLive[y][x])]);
 		switch (this.currShowing.doc.clickType) {
 			case 'creature':
 				this.showCreature = true;
@@ -147,7 +148,7 @@ export class LevelViewComponent implements OnInit  {
 		this.player.doc.displayAs = '@';
 		this.player.curHp = _.cloneDeep(this.player.hp);
 		for (const oneNpc in this.npcs) {
-			this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].hp);
+			this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].doc.baseHp);
 			this.npcs[oneNpc].x = _.cloneDeep(this.npcs[oneNpc].origX);
 			this.npcs[oneNpc].y = _.cloneDeep(this.npcs[oneNpc].origY);
 		}
