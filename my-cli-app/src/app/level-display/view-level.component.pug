@@ -49,10 +49,27 @@ table(*ngIf="!isLoading" align="center" class='oneStory')
 				b
 					i Lvl: {{currShowing.curLvl}}
 				br
+				b
+					i Str: {{currShowing.doc.baseStr}}
+				br
+				b
+					i Agi: {{currShowing.doc.baseAgi}}
+
+				br
+				b
+					i Dex: {{currShowing.doc.baseDex}}
+				br
+				b
+					i Def: {{currShowing.doc.baseDef}}
+				br
+				b
+
+					i Res: {{currShowing.doc.baseRes}}
+				br
 				p
 					b
 						i {{currShowing.doc.description}}
-					br
+				br
 
 			div(align="center",*ngIf="showPlayer")
 				p
