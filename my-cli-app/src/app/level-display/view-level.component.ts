@@ -146,6 +146,7 @@ export class LevelViewComponent implements OnInit  {
 		this.player.doc = {};
 		this.player.doc.color = '#1f00ff';
 		this.player.doc.displayAs = '@';
+		this.player.doc.clickType = 'player';
 		this.player.curHp = _.cloneDeep(this.player.hp);
 		for (const oneNpc in this.npcs) {
 			this.npcs[oneNpc].curHp = _.cloneDeep(this.npcs[oneNpc].doc.baseHp);
