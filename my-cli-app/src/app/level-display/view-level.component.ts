@@ -29,6 +29,8 @@ export class LevelViewComponent implements OnInit  {
 	showPlayer;
 	showTile;
 	currShowing;
+	actionField;
+	Math;
 
 	constructor(
 		private webSer: WebService,
@@ -41,6 +43,16 @@ export class LevelViewComponent implements OnInit  {
 		this.showPlayer = false;
 		this.showTile = false;
 		this.currShowing = {};
+		this.Math = Math;
+		this.actionField = {
+			activated: false,
+			bgColor: '',
+			canBodyEnter: false,
+			canEnter: false,
+			poxX: 0,
+			posY: 0,
+			radius: 0,
+		};
 
 	}
 
@@ -74,6 +86,12 @@ export class LevelViewComponent implements OnInit  {
 
 			this.mapLive = this.moveSer.updateMap(this.mapLive, this.mapBase, this.player, this.npcs);
 
+			for (const yAxis in this.mapLive)  {
+				for (const xAxis in this.mapLive[yAxis]){
+					console.log(this.actionField.activated === false || (((this.player.y - Number(yAxis) > this.player.possDistance) || (this.player.y - Number(yAxis) < -this.player.possDistance)) && ((this.player.x - Number(xAxis) > this.player.possDistance) && this.player.x - Number(xAxis) < -this.player.possDistance)));
+				}
+			}
+
 			this.isLoading = false;
 
 		});
@@ -84,6 +102,7 @@ export class LevelViewComponent implements OnInit  {
 
 	checkAction (y, x) {
 		console.log(y + '.' + x);
+		this.actionField.activated = false;
 		this.currShowing = _.cloneDeep(this.tiles[this.tilesIndex.indexOf(this.mapLive[y][x])]);
 		switch (this.currShowing.doc.clickType) {
 			case 'creature':
@@ -111,7 +130,7 @@ export class LevelViewComponent implements OnInit  {
 
 
 	initMove (yChange, xChange) {
-		this.player = this.moveSer.initMove(this.tiles, this.tilesIndex, this.mapBase, this.mapLive, this.player, yChange, xChange,'canEnter');
+		this.player = this.moveSer.initMove(this.tiles, this.tilesIndex, this.mapBase, this.mapLive, this.player, yChange, xChange, 'canEnter');
 
 		if (this.player.curHp <= 0) {
 			this.gameOverDialog();
@@ -155,6 +174,31 @@ export class LevelViewComponent implements OnInit  {
 		}
 	}
 
+	activateArea(arType: string) {
+		console.log(arType);
+		switch (arType) {
+			case 'possession':
+				this.setPossessionArea();
+				break;
+			default:
+				console.log('unknown action');
+		}
+	}
 
+	setPossessionArea() {
+		this.actionField = {
+			activated: true,
+			bgColor: '#140194', // '#0077FF',
+			canBodyEnter: false,
+			canEnter: false,
+			poxX: 0,
+			posY: 0,
+			radius: 0,
+		};
+	}
+
+	selectActiveArea(arType) {
+		console.log('successful ' + arType);
+	}
 
 }
